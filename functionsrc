@@ -1,0 +1,97 @@
+# Check weather
+function weather() {
+	if [ "$#" -eq 0 ];then
+		curl https://www.wttr.in/
+	elif [ "$#" -eq 1 ];then
+		curl https://www.wttr.in/"$*"
+	else
+		echo "Usage: weather [Option: City]"
+		exit 1
+	fi
+}
+
+
+# Cheatsheet of commands
+function cheat() {
+	if [ "$#" -eq 1 ];then
+		curl https://cht.sh/"$*"
+	else
+		echo "Usage: cheat [Option: Command]"
+		exit 1
+	fi
+}
+
+# QRCode
+function qrcode() {
+	if [ "$#" -eq 1 ];then
+		curl https://qrenco.de/"$*"
+	else
+		echo "Usage: qrcode [Option: String]"
+		exit 1
+	fi
+}
+
+
+# Mkdir and CD into
+function mkcd() {
+	mkdir -p "$*"
+	cd "$*"
+}
+
+# Backup
+function bak() {
+	if [ "$#" -eq 1 ];then
+		cp $1{,.bak}
+	else
+		echo "Usage: bak [Option: filename]"
+		exit 1
+	fi
+
+}
+
+# Python HttpdServer
+# FIXME: case for python3
+function simpleserver() {
+	if [ -x `command -v python` ];then
+		sudo python -m SimpleHTTPServer 80 
+	else
+		echo "Python not found."
+		exit 1
+	fi
+}
+
+
+# Credit to http://thirtysixthspan.com/posts/grep-history-for
+# ghf - [G]rep [H]istory [F]or top ten commands and execute one
+# usage:
+#  Most frequent command in recent history
+#   ghf
+#  Most frequent instances of {command} in all history
+#   ghf {command}
+#  Execute {command-number} after a call to ghf
+#   !! {command-number}
+# FIXME: !! under OSX
+function latest-history { history | tail -n 50 ; }
+function grepped-history { history | grep "$1" ; }
+function chop-first-column { awk '{for (i=2; i<NF; i++) printf $i " "; print $NF}' ; }
+function add-line-numbers { awk '{print NR " " $0}' ; }
+function top-ten { sort | uniq -c | sort -r | head -n 10 ; }
+function unique-history { chop-first-column | top-ten | chop-first-column | add-line-numbers ; }
+function ghf {
+  if [ $# -eq 0 ]; then latest-history | unique-history; fi
+  if [ $# -eq 1 ]; then grepped-history "$1" | unique-history; fi
+  if [ $# -eq 2 ]; then
+    `grepped-history "$1" | unique-history | grep ^$2 | chop-first-column`;
+  fi
+}
+
+# Location
+alias whereami='curl ifconfig.co/city'
+# terminal browser
+alias brow='ssh brow.sh'
+# world map
+alias worldmap='telnet mapscii.me'
+# Funny commit message
+alias commitmsg='curl -sk https://whatthecommit.com/index.txt'
+# Jokes
+alias joke='curl https://icanhazdadjoke.com'
