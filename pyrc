@@ -1,0 +1,10 @@
+# Python HttpdServer
+# FIXME: case for python3
+function simpleserver() {
+	if [ -x `command -v python` ];then
+		sudo python -m SimpleHTTPServer 80 
+	else
+		echo "Python not found."
+	fi
+}
+

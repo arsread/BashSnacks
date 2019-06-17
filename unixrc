@@ -1,34 +1,3 @@
-# Check weather
-function weather() {
-	if [ "$#" -eq 0 ];then
-		curl https://www.wttr.in/
-	elif [ "$#" -eq 1 ];then
-		curl https://www.wttr.in/"$*"
-	else
-		echo "Usage: weather [Option: City]"
-	fi
-}
-
-
-# Cheatsheet of commands
-function cheat() {
-	if [ "$#" -eq 1 ];then
-		curl https://cht.sh/"$*"
-	else
-		echo "Usage: cheat [Option: Command]"
-	fi
-}
-
-# QRCode
-function qrcode() {
-	if [ "$#" -eq 1 ];then
-		curl https://qrenco.de/"$*"
-	else
-		echo "Usage: qrcode [Option: String]"
-	fi
-}
-
-
 # Mkdir and CD into
 function mkcd() {
 	mkdir -p "$*"
@@ -44,17 +13,6 @@ function bak() {
 	fi
 
 }
-
-# Python HttpdServer
-# FIXME: case for python3
-function simpleserver() {
-	if [ -x `command -v python` ];then
-		sudo python -m SimpleHTTPServer 80 
-	else
-		echo "Python not found."
-	fi
-}
-
 
 # Credit to http://thirtysixthspan.com/posts/grep-history-for
 # ghf - [G]rep [H]istory [F]or top ten commands and execute one
@@ -79,14 +37,3 @@ function ghf {
     `grepped-history "$1" | unique-history | grep ^$2 | chop-first-column`;
   fi
 }
-
-# Location
-alias whereami='curl ifconfig.co/city'
-# terminal browser
-alias brow='ssh brow.sh'
-# world map
-alias worldmap='telnet mapscii.me'
-# Funny commit message
-alias commitmsg='curl -sk https://whatthecommit.com/index.txt'
-# Jokes
-alias joke='curl https://icanhazdadjoke.com'
